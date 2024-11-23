@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 
@@ -12,6 +19,11 @@ export class UserController {
     return this.userService.fillTable();
   }
 
+  @Post('status')
+  async getStatuses(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.findStatuses(id);
+  }
+
   @Get()
   async getClients(
     @Query('limit') limit: number,
@@ -23,10 +35,5 @@ export class UserController {
   @Get('all')
   async getAllClients() {
     return this.userService.findAllClients();
-  }
-
-  @Post('status')
-  async getStatuses(@Query('id') id: number) {
-    return this.userService.findStatuses(id);
   }
 }
